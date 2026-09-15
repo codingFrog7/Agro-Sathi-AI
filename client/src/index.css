@@ -9748,12 +9748,12 @@
   background: rgba(0, 0, 0, 0.04);
   padding: 3.5px 5px;
   border-radius: 999px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1.5px solid rgba(0, 0, 0, 0.2);
 }
 
 .dark .site-nav-links-cluster {
   background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .site-nav-item-pill {
@@ -9961,9 +9961,9 @@
   position: relative;
   min-height: 86vh;
   min-height: 86dvh;
-  width: calc(100% - 32px);
+  width: calc(100% - 64px);
   max-width: 1400px;
-  margin: 78px auto 0;
+  margin: 100px auto 32px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -10002,25 +10002,11 @@
 
 /* Minimal translucent gradient so photography remains crystal clear */
 .haven-hero-gradient-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg,
-      rgba(248, 247, 242, 0.15) 0%,
-      rgba(248, 247, 242, 0.02) 20%,
-      rgba(248, 247, 242, 0) 50%,
-      rgba(248, 247, 242, 0.15) 75%,
-      rgba(248, 247, 242, 0.7) 92%,
-      rgba(248, 247, 242, 1) 100%);
+  display: none;
 }
 
 .dark .haven-hero-gradient-overlay {
-  background: linear-gradient(180deg,
-      rgba(18, 20, 19, 0.3) 0%,
-      rgba(18, 20, 19, 0.06) 20%,
-      rgba(18, 20, 19, 0) 50%,
-      rgba(18, 20, 19, 0.25) 75%,
-      rgba(18, 20, 19, 0.8) 92%,
-      rgba(18, 20, 19, 1) 100%);
+  display: none;
 }
 
 /* Frosted Glassmorphic Hero Container Card */
@@ -10033,10 +10019,8 @@
   margin: 0 auto;
   padding: 44px 48px;
   border-radius: 28px;
-  background: rgba(255, 255, 255, 0.58);
-  backdrop-filter: blur(28px) saturate(190%);
-  -webkit-backdrop-filter: blur(28px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.78);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow:
     0 24px 60px -12px rgba(18, 36, 25, 0.14),
     0 4px 18px -2px rgba(18, 36, 25, 0.06),
@@ -10051,8 +10035,8 @@
 
 .haven-hero-glass-card:hover,
 .haven-hero-center-content:hover {
-  background: rgba(255, 255, 255, 0.68);
-  border-color: rgba(255, 255, 255, 0.92);
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.12);
   box-shadow:
     0 32px 72px -12px rgba(18, 36, 25, 0.18),
     0 6px 22px -2px rgba(18, 36, 25, 0.08),
@@ -10061,9 +10045,7 @@
 
 .dark .haven-hero-glass-card,
 .dark .haven-hero-center-content {
-  background: rgba(18, 22, 20, 0.64);
-  backdrop-filter: blur(32px) saturate(200%);
-  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  background: #121614;
   border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow:
     0 28px 70px -12px rgba(0, 0, 0, 0.65),
@@ -10074,7 +10056,7 @@
 
 .dark .haven-hero-glass-card:hover,
 .dark .haven-hero-center-content:hover {
-  background: rgba(22, 27, 24, 0.74);
+  background: #161b18;
   border-color: rgba(213, 255, 95, 0.28);
 }
 
@@ -10088,7 +10070,7 @@
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid #d4d9cc;
+  border: 1.5px solid #01520f;
   box-shadow:
     0 2px 10px rgba(0, 0, 0, 0.04),
     inset 0 1px 1px rgba(255, 255, 255, 0.8);
@@ -10110,7 +10092,7 @@
 
 .dark .haven-announcement-badge {
   background: rgba(182, 240, 34, 0.12);
-  border-color: rgba(182, 240, 34, 0.35);
+  border-color: #b6f022;
   color: #b6f022;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
 }

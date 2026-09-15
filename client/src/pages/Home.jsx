@@ -936,7 +936,7 @@ function HomePage() {
               </div>
             </section>
           ) : (
-            /* RENDER INFORMATIONAL SECTION (Neo-Brutalist Layout) */
+            <>
             <section className="agro-neo-info">
               <h2 className="neo-main-title">How it works</h2>
               
@@ -985,6 +985,69 @@ function HomePage() {
                 </div>
               </div>
             </section>
+            
+            {/* About Agro Sathi Section */}
+            <section className="agro-neo-info" style={{ marginTop: "64px" }}>
+              <h2 className="neo-main-title">About Agro Sathi</h2>
+              <div className="neo-steps-container">
+                <div
+                  className="neo-step-row"
+                  style={{ alignItems: "center", border: "none" }}
+                >
+                  <div
+                    className="neo-step-text"
+                    style={{
+                      flex: 1,
+                      padding: "2.5rem",
+                      background: "var(--card)",
+                      borderRadius: "24px",
+                      border: "1px solid var(--border)",
+                      boxShadow: "0 10px 40px -10px rgba(0,0,0,0.08)",
+                    }}
+                  >
+                    <h3
+                      style={{
+                        fontSize: "clamp(24px, 3vw, 32px)",
+                        marginBottom: "1rem",
+                        color: "var(--foreground)",
+                        fontWeight: "800",
+                        letterSpacing: "-0.02em"
+                      }}
+                    >
+                      Empowering the Kisan with AI
+                    </h3>
+                    <p
+                      style={{
+                        fontSize: "1.1rem",
+                        color: "var(--muted-foreground)",
+                        lineHeight: 1.7,
+                        marginBottom: "1.5rem",
+                      }}
+                    >
+                      Agro Sathi is built with a singular mission: to bring
+                      world-class agricultural intelligence directly to the
+                      hands of the farmer. By combining cutting-edge artificial
+                      intelligence with localized agronomic expertise, we
+                      eliminate the guesswork in crop disease management.
+                    </p>
+                    <p
+                      style={{
+                        fontSize: "1.1rem",
+                        color: "var(--muted-foreground)",
+                        lineHeight: 1.7,
+                      }}
+                    >
+                      Whether you are dealing with common pests or rare fungal
+                      infections, Agro Sathi stands by you as a digital
+                      companion. We help ensure higher yields, safer chemical
+                      use, and a more sustainable, prosperous future for your
+                      fields.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+            </>
           )}
         </div>
       </div>
