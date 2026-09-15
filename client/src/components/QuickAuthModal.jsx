@@ -384,10 +384,10 @@ export default function QuickAuthModal({
                 alignItems: "center",
                 justifyContent: "center",
                 gap: "8px",
-                transition: "background 0.2s"
+                transition: "background 0.2s",
               }}
-              onMouseEnter={(e) => e.currentTarget.style.background = "#e2e8f0"}
-              onMouseLeave={(e) => e.currentTarget.style.background = "#f1f5f9"}
+              onMouseEnter={e => (e.currentTarget.style.background = "#e2e8f0")}
+              onMouseLeave={e => (e.currentTarget.style.background = "#f1f5f9")}
             >
               <User size={16} /> Continue as Guest
             </button>

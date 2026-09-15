@@ -174,7 +174,7 @@ export default function DetectPage() {
       const data = await res.json();
       setAskAnswer(
         data.answer ||
-        (lang === "hi" ? "कोई उत्तर नहीं मिला।" : "No answer received.")
+          (lang === "hi" ? "कोई उत्तर नहीं मिला।" : "No answer received.")
       );
     } catch (err) {
       console.warn("Ask error:", err);
@@ -224,8 +224,8 @@ export default function DetectPage() {
         setNotPlant(true);
         setErrorMsg(
           data?.error ||
-          "This image does not appear to be a plant, crop, or leaf photo. " +
-          "Please upload a clear photo of a crop leaf or plant so the AI can diagnose it."
+            "This image does not appear to be a plant, crop, or leaf photo. " +
+              "Please upload a clear photo of a crop leaf or plant so the AI can diagnose it."
         );
         setActiveDiagnosis(null);
         setResult(false);
@@ -236,8 +236,8 @@ export default function DetectPage() {
       if (!response.ok) {
         throw new Error(
           data?.error ||
-          data?.message ||
-          "AI was unable to analyze this image. Please try a clearer photo."
+            data?.message ||
+            "AI was unable to analyze this image. Please try a clearer photo."
         );
       }
 
@@ -258,8 +258,8 @@ export default function DetectPage() {
       } else {
         throw new Error(
           data?.error ||
-          data?.message ||
-          "AI was unable to diagnose this image. Please provide a clear, well-lit photo of an infected leaf."
+            data?.message ||
+            "AI was unable to diagnose this image. Please provide a clear, well-lit photo of an infected leaf."
         );
       }
     } catch (err) {
@@ -267,7 +267,7 @@ export default function DetectPage() {
       setNotPlant(false);
       setErrorMsg(
         err.message ||
-        "Failed to analyze photo. Please try uploading a clearer image."
+          "Failed to analyze photo. Please try uploading a clearer image."
       );
       setActiveDiagnosis(null);
       setResult(false);
@@ -344,7 +344,6 @@ Severity: Level ${activeDiagnosis.severity}/5 (${activeDiagnosis.severityLabel |
     setActiveDiagnosis(null);
     setErrorMsg("");
     setNotPlant(false);
-    setPythonResult(null);
     if (window.speechSynthesis) window.speechSynthesis.cancel();
     setIsSpeaking(false);
     window.scrollTo({ top: 0, behavior: "smooth" });

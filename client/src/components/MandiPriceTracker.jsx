@@ -7,7 +7,7 @@ import {
   AlertCircle,
   Sparkles,
   Coins,
-  MapPin
+  MapPin,
 } from "lucide-react";
 
 export const MANDI_DATA = {
@@ -199,7 +199,7 @@ export default function MandiPriceTracker() {
   const [liveLocation, setLiveLocation] = useState("");
 
   const mandiList = Object.keys(MANDI_DATA);
-  const crops = livePrices ? livePrices : (MANDI_DATA[selectedMandi] || []);
+  const crops = livePrices ? livePrices : MANDI_DATA[selectedMandi] || [];
 
   const filteredCrops = crops.filter(c => {
     if (activeFilter === "up") return c.trend === "up";
@@ -207,9 +207,12 @@ export default function MandiPriceTracker() {
     return true;
   });
 
-  const activeCropObj = crops.find(c => c.id === calcCrop) || crops[0] || MANDI_DATA.Karimnagar[0];
-  const grossIncome = activeCropObj ? (activeCropObj.price * calcQuantity) : 0;
-  const mspBaseline = activeCropObj ? ((activeCropObj.msp || 0) * calcQuantity) : 0;
+  const activeCropObj =
+    crops.find(c => c.id === calcCrop) || crops[0] || MANDI_DATA.Karimnagar[0];
+  const grossIncome = activeCropObj ? activeCropObj.price * calcQuantity : 0;
+  const mspBaseline = activeCropObj
+    ? (activeCropObj.msp || 0) * calcQuantity
+    : 0;
   const mandiFee = Math.round(grossIncome * 0.01);
   const netEarnings = grossIncome - mandiFee;
   const profitOverMSP = grossIncome - mspBaseline;
@@ -218,14 +221,16 @@ export default function MandiPriceTracker() {
     setLoadingLive(true);
     try {
       let payload = {};
-      
+
       if (navigator.geolocation) {
         try {
           const pos = await new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 });
+            navigator.geolocation.getCurrentPosition(resolve, reject, {
+              timeout: 5000,
+            });
           });
           payload = { lat: pos.coords.latitude, lon: pos.coords.longitude };
-        } catch(e) {
+        } catch (e) {
           console.warn("GPS failed, using IP fallback");
         }
       }
@@ -233,27 +238,32 @@ export default function MandiPriceTracker() {
       const res = await fetch("/api/mandi-prices", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
-      
+
       const data = await res.json();
       if (!res.ok) throw new Error(data.detail || "Failed to fetch prices");
-      
+
       if (data.prices && data.prices.length > 0) {
         setLivePrices(data.prices);
         setLiveLocation(data.location || "Your Location");
         setCalcCrop(data.prices[0].id);
       }
     } catch (e) {
-      alert("Could not fetch live prices right now. Using default data.\nError: " + e.message);
+      alert(
+        "Could not fetch live prices right now. Using default data.\nError: " +
+          e.message
+      );
     } finally {
       setLoadingLive(false);
     }
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto my-12 bg-white border-4 border-slate-900 rounded-2xl shadow-[8px_8px_0px_0px_#0f172a] p-6 lg:p-10 relative overflow-hidden font-sans" id="mandi-bhav-section">
-      
+    <div
+      className="w-full max-w-6xl mx-auto my-12 bg-white border-4 border-slate-900 rounded-2xl shadow-[8px_8px_0px_0px_#0f172a] p-6 lg:p-10 relative overflow-hidden font-sans"
+      id="mandi-bhav-section"
+    >
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 pb-6 border-b-4 border-slate-900 gap-6">
         <div>
@@ -261,15 +271,21 @@ export default function MandiPriceTracker() {
             <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
             <span>Mandi Bhav · Live APMC Rates</span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-2 tracking-tight">Today's Market Rates & Sell Advisory</h2>
+          <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-2 tracking-tight">
+            Today's Market Rates & Sell Advisory
+          </h2>
           <p className="text-slate-700 font-medium text-lg max-w-xl">
-            Real-time auction rates from {liveLocation || "Telangana"} APMC markets with Agromet guidance.
+            Real-time auction rates from {liveLocation || "Telangana"} APMC
+            markets with Agromet guidance.
           </p>
         </div>
 
         {/* Mandi Selector */}
         <div className="flex flex-col items-start md:items-end gap-2 w-full md:w-auto">
-          <label htmlFor="mandi-select" className="flex items-center gap-2 font-bold text-slate-900">
+          <label
+            htmlFor="mandi-select"
+            className="flex items-center gap-2 font-bold text-slate-900"
+          >
             <Building2 size={18} /> Select Market:
           </label>
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full">
@@ -287,15 +303,17 @@ export default function MandiPriceTracker() {
               }}
               className="appearance-none border-4 border-slate-900 rounded-xl px-4 py-3 font-bold bg-slate-50 focus:outline-none focus:ring-4 focus:ring-[#b6f022] shadow-[4px_4px_0px_0px_#0f172a] cursor-pointer flex-1"
             >
-              {liveLocation && <option value="custom">📍 {liveLocation}</option>}
+              {liveLocation && (
+                <option value="custom">📍 {liveLocation}</option>
+              )}
               {mandiList.map(m => (
                 <option key={m} value={m}>
                   {m} APMC Yard
                 </option>
               ))}
             </select>
-            
-            <button 
+
+            <button
               onClick={fetchLivePrices}
               disabled={loadingLive}
               className="flex items-center justify-center gap-2 border-4 border-slate-900 rounded-xl px-5 py-3 font-black bg-[#b6f022] text-slate-900 shadow-[4px_4px_0px_0px_#0f172a] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#0f172a] active:translate-y-[4px] active:shadow-none transition-all uppercase tracking-wide disabled:opacity-70 disabled:cursor-not-allowed"
@@ -314,8 +332,8 @@ export default function MandiPriceTracker() {
             type="button"
             onClick={() => setActiveFilter("all")}
             className={`px-5 py-2 rounded-full border-2 border-slate-900 font-bold transition-all ${
-              activeFilter === "all" 
-                ? "bg-slate-900 text-white shadow-[2px_2px_0px_0px_#b6f022]" 
+              activeFilter === "all"
+                ? "bg-slate-900 text-white shadow-[2px_2px_0px_0px_#b6f022]"
                 : "bg-white text-slate-900 hover:-translate-y-0.5 hover:shadow-[2px_2px_0px_0px_#0f172a]"
             }`}
           >
@@ -325,8 +343,8 @@ export default function MandiPriceTracker() {
             type="button"
             onClick={() => setActiveFilter("up")}
             className={`px-5 py-2 rounded-full border-2 border-slate-900 font-bold flex items-center gap-2 transition-all ${
-              activeFilter === "up" 
-                ? "bg-[#b6f022] text-slate-900 shadow-[2px_2px_0px_0px_#0f172a]" 
+              activeFilter === "up"
+                ? "bg-[#b6f022] text-slate-900 shadow-[2px_2px_0px_0px_#0f172a]"
                 : "bg-white text-slate-900 hover:-translate-y-0.5 hover:shadow-[2px_2px_0px_0px_#0f172a]"
             }`}
           >
@@ -336,8 +354,8 @@ export default function MandiPriceTracker() {
             type="button"
             onClick={() => setActiveFilter("high-value")}
             className={`px-5 py-2 rounded-full border-2 border-slate-900 font-bold transition-all ${
-              activeFilter === "high-value" 
-                ? "bg-slate-900 text-white shadow-[2px_2px_0px_0px_#b6f022]" 
+              activeFilter === "high-value"
+                ? "bg-slate-900 text-white shadow-[2px_2px_0px_0px_#b6f022]"
                 : "bg-white text-slate-900 hover:-translate-y-0.5 hover:shadow-[2px_2px_0px_0px_#0f172a]"
             }`}
           >
@@ -349,7 +367,9 @@ export default function MandiPriceTracker() {
           type="button"
           onClick={() => setShowCalculator(!showCalculator)}
           className={`flex justify-center items-center gap-2 px-5 py-2 border-4 border-slate-900 font-black uppercase rounded-xl transition-all shadow-[4px_4px_0px_0px_#0f172a] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_#0f172a] active:translate-y-[4px] active:shadow-none ${
-            showCalculator ? "bg-slate-900 text-white" : "bg-white text-slate-900"
+            showCalculator
+              ? "bg-slate-900 text-white"
+              : "bg-white text-slate-900"
           }`}
         >
           <Calculator size={18} />
@@ -366,13 +386,17 @@ export default function MandiPriceTracker() {
                 <Coins size={24} className="text-emerald-600" />
                 Farmer Lot Earnings Calculator
               </h3>
-              <p className="text-slate-600 font-medium mt-1">Calculate your net truckload or tractor return after Mandi cess.</p>
+              <p className="text-slate-600 font-medium mt-1">
+                Calculate your net truckload or tractor return after Mandi cess.
+              </p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
             <div className="flex flex-col gap-2">
-              <label className="font-bold text-slate-900 uppercase text-xs tracking-wider">Select Crop</label>
+              <label className="font-bold text-slate-900 uppercase text-xs tracking-wider">
+                Select Crop
+              </label>
               <select
                 value={calcCrop}
                 onChange={e => setCalcCrop(e.target.value)}
@@ -387,14 +411,18 @@ export default function MandiPriceTracker() {
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="font-bold text-slate-900 uppercase text-xs tracking-wider">Harvest Quantity</label>
+              <label className="font-bold text-slate-900 uppercase text-xs tracking-wider">
+                Harvest Quantity
+              </label>
               <div className="flex items-stretch">
                 <input
                   type="number"
                   min="1"
                   max="1000"
                   value={calcQuantity}
-                  onChange={e => setCalcQuantity(Math.max(1, Number(e.target.value) || 1))}
+                  onChange={e =>
+                    setCalcQuantity(Math.max(1, Number(e.target.value) || 1))
+                  }
                   className="flex-1 border-2 border-r-0 border-slate-900 rounded-l-lg px-4 py-3 font-bold bg-white focus:ring-4 focus:ring-[#b6f022] outline-none"
                 />
                 <div className="bg-slate-900 text-white font-bold px-4 flex items-center justify-center rounded-r-lg border-2 border-slate-900">
@@ -404,14 +432,18 @@ export default function MandiPriceTracker() {
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="font-bold text-slate-900 uppercase text-xs tracking-wider">Quick Presets</label>
+              <label className="font-bold text-slate-900 uppercase text-xs tracking-wider">
+                Quick Presets
+              </label>
               <div className="flex flex-wrap gap-2 h-full items-center">
                 {[5, 10, 20, 50].map(q => (
                   <button
                     key={q}
                     onClick={() => setCalcQuantity(q)}
                     className={`px-4 py-3 rounded-lg border-2 border-slate-900 font-black transition-all ${
-                      calcQuantity === q ? "bg-slate-900 text-[#b6f022]" : "bg-white text-slate-900 hover:bg-slate-200 hover:-translate-y-0.5"
+                      calcQuantity === q
+                        ? "bg-slate-900 text-[#b6f022]"
+                        : "bg-white text-slate-900 hover:bg-slate-200 hover:-translate-y-0.5"
                     }`}
                   >
                     {q}
@@ -423,23 +455,42 @@ export default function MandiPriceTracker() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white border-4 border-slate-900 rounded-xl p-5 shadow-[4px_4px_0px_0px_#0f172a]">
-              <div className="text-slate-600 font-bold mb-1 uppercase text-sm tracking-wider">Gross Value</div>
-              <div className="text-3xl md:text-4xl font-black text-slate-900 mb-2 truncate">₹{grossIncome.toLocaleString("en-IN")}</div>
-              <div className="text-sm font-semibold text-slate-500">@ ₹{activeCropObj?.price.toLocaleString("en-IN")} / Qtl</div>
+              <div className="text-slate-600 font-bold mb-1 uppercase text-sm tracking-wider">
+                Gross Value
+              </div>
+              <div className="text-3xl md:text-4xl font-black text-slate-900 mb-2 truncate">
+                ₹{grossIncome.toLocaleString("en-IN")}
+              </div>
+              <div className="text-sm font-semibold text-slate-500">
+                @ ₹{activeCropObj?.price.toLocaleString("en-IN")} / Qtl
+              </div>
             </div>
-            
+
             <div className="bg-[#b6f022] border-4 border-slate-900 rounded-xl p-5 shadow-[4px_4px_0px_0px_#0f172a]">
-              <div className="text-slate-800 font-black mb-1 uppercase text-sm tracking-wider">Net Take-Home</div>
-              <div className="text-3xl md:text-4xl font-black text-slate-900 mb-2 truncate">₹{netEarnings.toLocaleString("en-IN")}</div>
-              <div className="text-sm font-bold text-slate-700/80">After ~1% APMC cess (-₹{mandiFee.toLocaleString("en-IN")})</div>
+              <div className="text-slate-800 font-black mb-1 uppercase text-sm tracking-wider">
+                Net Take-Home
+              </div>
+              <div className="text-3xl md:text-4xl font-black text-slate-900 mb-2 truncate">
+                ₹{netEarnings.toLocaleString("en-IN")}
+              </div>
+              <div className="text-sm font-bold text-slate-700/80">
+                After ~1% APMC cess (-₹{mandiFee.toLocaleString("en-IN")})
+              </div>
             </div>
 
             <div className="bg-white border-4 border-slate-900 rounded-xl p-5 shadow-[4px_4px_0px_0px_#0f172a]">
-              <div className="text-slate-600 font-bold mb-1 uppercase text-sm tracking-wider">Gain Above MSP</div>
-              <div className={`text-3xl md:text-4xl font-black mb-2 truncate ${profitOverMSP >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
-                {profitOverMSP >= 0 ? "+" : ""}₹{profitOverMSP.toLocaleString("en-IN")}
+              <div className="text-slate-600 font-bold mb-1 uppercase text-sm tracking-wider">
+                Gain Above MSP
               </div>
-              <div className="text-sm font-semibold text-slate-500">MSP: ₹{(activeCropObj?.msp || 0).toLocaleString("en-IN")}/Qtl</div>
+              <div
+                className={`text-3xl md:text-4xl font-black mb-2 truncate ${profitOverMSP >= 0 ? "text-emerald-600" : "text-red-600"}`}
+              >
+                {profitOverMSP >= 0 ? "+" : ""}₹
+                {profitOverMSP.toLocaleString("en-IN")}
+              </div>
+              <div className="text-sm font-semibold text-slate-500">
+                MSP: ₹{(activeCropObj?.msp || 0).toLocaleString("en-IN")}/Qtl
+              </div>
             </div>
           </div>
         </div>
@@ -452,33 +503,57 @@ export default function MandiPriceTracker() {
           const diffMsp = crop.price - crop.msp;
 
           return (
-            <div key={crop.id} className="bg-white border-4 border-slate-900 rounded-2xl p-6 shadow-[6px_6px_0px_0px_#0f172a] hover:-translate-y-2 hover:shadow-[10px_10px_0px_0px_#0f172a] transition-all flex flex-col justify-between group duration-300">
-              
+            <div
+              key={crop.id}
+              className="bg-white border-4 border-slate-900 rounded-2xl p-6 shadow-[6px_6px_0px_0px_#0f172a] hover:-translate-y-2 hover:shadow-[10px_10px_0px_0px_#0f172a] transition-all flex flex-col justify-between group duration-300"
+            >
               <div>
                 <div className="flex justify-between items-start mb-5">
                   <div>
-                    <h3 className="text-2xl font-black text-slate-900 leading-tight mb-1">{crop.name}</h3>
-                    <span className="text-slate-500 font-bold px-2 py-0.5 bg-slate-100 rounded text-sm">{crop.localName}</span>
+                    <h3 className="text-2xl font-black text-slate-900 leading-tight mb-1">
+                      {crop.name}
+                    </h3>
+                    <span className="text-slate-500 font-bold px-2 py-0.5 bg-slate-100 rounded text-sm">
+                      {crop.localName}
+                    </span>
                   </div>
-                  <div className={`px-3 py-1.5 border-2 border-slate-900 rounded-full text-xs font-black uppercase tracking-wider shadow-[2px_2px_0px_0px_#0f172a] flex-shrink-0 ${
-                    crop.action === "SELL NOW" ? "bg-[#b6f022] text-slate-900" :
-                    crop.action === "HOLD / STORE" ? "bg-amber-300 text-amber-900" :
-                    "bg-slate-200 text-slate-800"
-                  }`}>
+                  <div
+                    className={`px-3 py-1.5 border-2 border-slate-900 rounded-full text-xs font-black uppercase tracking-wider shadow-[2px_2px_0px_0px_#0f172a] flex-shrink-0 ${
+                      crop.action === "SELL NOW"
+                        ? "bg-[#b6f022] text-slate-900"
+                        : crop.action === "HOLD / STORE"
+                          ? "bg-amber-300 text-amber-900"
+                          : "bg-slate-200 text-slate-800"
+                    }`}
+                  >
                     {crop.action}
                   </div>
                 </div>
 
                 <div className="flex flex-wrap items-end justify-between gap-4 mb-6">
                   <div className="flex items-start">
-                    <span className="text-xl font-bold text-slate-400 mt-1 mr-1">₹</span>
-                    <span className="text-3xl xl:text-4xl font-black text-slate-900 tracking-tighter">{crop.price.toLocaleString("en-IN")}</span>
-                    <span className="text-sm font-bold text-slate-500 ml-2 mb-1 self-end">/ {crop.unit}</span>
+                    <span className="text-xl font-bold text-slate-400 mt-1 mr-1">
+                      ₹
+                    </span>
+                    <span className="text-3xl xl:text-4xl font-black text-slate-900 tracking-tighter">
+                      {crop.price.toLocaleString("en-IN")}
+                    </span>
+                    <span className="text-sm font-bold text-slate-500 ml-2 mb-1 self-end">
+                      / {crop.unit}
+                    </span>
                   </div>
-                  <div className={`flex items-center gap-1 font-black px-2 py-1 rounded border-2 shadow-[2px_2px_0px_0px_#0f172a] ${
-                    crop.trend === "up" ? "bg-[#b6f022] text-slate-900 border-slate-900" : "bg-red-100 text-red-700 border-red-300"
-                  }`}>
-                    {crop.trend === "up" ? <TrendingUp size={16} strokeWidth={3} /> : <TrendingDown size={16} strokeWidth={3} />}
+                  <div
+                    className={`flex items-center gap-1 font-black px-2 py-1 rounded border-2 shadow-[2px_2px_0px_0px_#0f172a] ${
+                      crop.trend === "up"
+                        ? "bg-[#b6f022] text-slate-900 border-slate-900"
+                        : "bg-red-100 text-red-700 border-red-300"
+                    }`}
+                  >
+                    {crop.trend === "up" ? (
+                      <TrendingUp size={16} strokeWidth={3} />
+                    ) : (
+                      <TrendingDown size={16} strokeWidth={3} />
+                    )}
                     {crop.trend === "up" ? "+" : ""}₹{crop.change}
                   </div>
                 </div>
@@ -486,11 +561,15 @@ export default function MandiPriceTracker() {
                 <div className="flex flex-col gap-2 text-sm font-semibold text-slate-700 mb-6 bg-slate-50 p-4 rounded-xl border-2 border-slate-200">
                   <div className="flex justify-between items-center border-b-2 border-slate-200 pb-2">
                     <span className="text-slate-500">Quality</span>
-                    <span className="text-right text-slate-900 font-bold truncate max-w-[60%]">{crop.quality}</span>
+                    <span className="text-right text-slate-900 font-bold truncate max-w-[60%]">
+                      {crop.quality}
+                    </span>
                   </div>
                   <div className="flex justify-between items-center pt-1">
                     <span className="text-slate-500">Today's Arrivals</span>
-                    <span className="text-right text-slate-900 font-bold truncate max-w-[60%]">{crop.arrivals}</span>
+                    <span className="text-right text-slate-900 font-bold truncate max-w-[60%]">
+                      {crop.arrivals}
+                    </span>
                   </div>
                 </div>
 
@@ -499,10 +578,16 @@ export default function MandiPriceTracker() {
                   <div className="pl-2">
                     <div className="flex justify-between items-center font-black text-sm mb-1">
                       <span className="text-slate-500">MSP BASELINE</span>
-                      <span className="text-slate-900">₹{crop.msp?.toLocaleString("en-IN")}</span>
+                      <span className="text-slate-900">
+                        ₹{crop.msp?.toLocaleString("en-IN")}
+                      </span>
                     </div>
-                    <div className={`text-xs font-bold uppercase tracking-wider ${isAboveMsp ? "text-emerald-600" : "text-red-600"}`}>
-                      {isAboveMsp ? `+₹${diffMsp.toLocaleString("en-IN")} Above MSP` : "At or below baseline"}
+                    <div
+                      className={`text-xs font-bold uppercase tracking-wider ${isAboveMsp ? "text-emerald-600" : "text-red-600"}`}
+                    >
+                      {isAboveMsp
+                        ? `+₹${diffMsp.toLocaleString("en-IN")} Above MSP`
+                        : "At or below baseline"}
                     </div>
                   </div>
                 </div>
@@ -510,7 +595,10 @@ export default function MandiPriceTracker() {
 
               <div className="mt-auto pt-2">
                 <div className="bg-amber-50 border-2 border-amber-300 rounded-xl p-4 mb-4 flex items-start gap-3 relative">
-                  <Sparkles size={20} className="text-amber-500 flex-shrink-0 mt-0.5" />
+                  <Sparkles
+                    size={20}
+                    className="text-amber-500 flex-shrink-0 mt-0.5"
+                  />
                   <p className="text-sm font-bold text-amber-900 leading-snug">
                     {crop.advisory}
                   </p>
@@ -528,7 +616,6 @@ export default function MandiPriceTracker() {
                   <Calculator size={18} /> Calculate Lot
                 </button>
               </div>
-
             </div>
           );
         })}

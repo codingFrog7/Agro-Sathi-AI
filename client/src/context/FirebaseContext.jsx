@@ -20,6 +20,7 @@ import {
   resetPassword,
   logoutUser,
   getFriendlyAuthErrorMessage,
+  handleRedirectResult,
   OperationType,
 } from "../lib/firebase.js";
 
@@ -35,12 +36,24 @@ export function FirebaseProvider({ children }) {
   const [syncStatus, setSyncStatus] = useState("ready"); // 'ready' | 'syncing' | 'error'
   const [syncError, setSyncError] = useState(null);
 
-  // Monitor Auth State
+  // Monitor Auth State & Handle Redirect Login
   useEffect(() => {
+    handleRedirectResult()
+      .then(redirectUser => {
+        if (redirectUser) {
+          localStorage.removeItem("agro_guest_mode");
+          setUser(redirectUser);
+        }
+      })
+      .catch(err => {
+        console.warn("Redirect sign-in notice:", err?.message || err);
+      });
+
     const unsubscribe = onAuthStateChanged(
       auth,
       currentUser => {
         if (currentUser) {
+          localStorage.removeItem("agro_guest_mode");
           setUser(currentUser);
         } else {
           const isGuest = localStorage.getItem("agro_guest_mode") === "true";
@@ -49,7 +62,7 @@ export function FirebaseProvider({ children }) {
               uid: "guest_local",
               isGuest: true,
               displayName: "Guest Farmer",
-              email: ""
+              email: "",
             });
           } else {
             setUser(null);
@@ -218,15 +231,24 @@ export function FirebaseProvider({ children }) {
               updatedAt: serverTimestamp(),
             };
             setFarmerProfile(initialProfile);
-            setDoc(profileRef, {
-              userId: user.uid,
-              displayName: user.displayName || user.email?.split("@")[0] || "Kisan Farmer",
-              location: "Karimnagar, Telangana",
-              primaryCrop: "Cotton / Chilli",
-              email: user.email || "",
-              photoURL: user.photoURL || null
-            }, { merge: true }).catch(e => {
-              console.info("Firestore profile sync deferred (offline or rules fallback):", e?.message);
+            setDoc(
+              profileRef,
+              {
+                userId: user.uid,
+                displayName:
+                  user.displayName ||
+                  user.email?.split("@")[0] ||
+                  "Kisan Farmer",
+                location: "Karimnagar, Telangana",
+                primaryCrop: "Cotton / Chilli",
+                updatedAt: serverTimestamp(),
+              },
+              { merge: true }
+            ).catch(e => {
+              console.info(
+                "Firestore profile sync deferred (offline or rules fallback):",
+                e?.message
+              );
             });
           }
         },
@@ -359,10 +381,12 @@ export function FirebaseProvider({ children }) {
       const localEntry = {
         id: "note_local_" + Date.now(),
         note: String(note).slice(0, 1000),
-        authorName: String(authorName || user?.displayName || "Guest Farmer").slice(0, 100),
+        authorName: String(
+          authorName || user?.displayName || "Guest Farmer"
+        ).slice(0, 100),
         cropTag: String(cropTag || "General").slice(0, 50),
         date: new Date().toLocaleDateString("en-IN"),
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       };
       const updated = [localEntry, ...fieldNotes];
       setFieldNotes(updated);
@@ -398,7 +422,10 @@ export function FirebaseProvider({ children }) {
     if (user.isGuest) {
       const payload = {
         userId: "guest_local",
-        displayName: String(updates.displayName || "Guest Farmer").slice(0, 100),
+        displayName: String(updates.displayName || "Guest Farmer").slice(
+          0,
+          100
+        ),
         location: String(updates.location || "Local Farm").slice(0, 100),
         primaryCrop: String(updates.primaryCrop || "Mixed").slice(0, 50),
         updatedAt: new Date().toISOString(),
@@ -505,7 +532,7 @@ export function FirebaseProvider({ children }) {
       uid: "guest_local",
       isGuest: true,
       displayName: "Guest Farmer",
-      email: ""
+      email: "",
     });
   };
 

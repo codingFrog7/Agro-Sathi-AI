@@ -263,7 +263,10 @@ function Header({ page }) {
 
 function Footer() {
   return (
-    <footer className="bg-[#eff0eb] text-slate-900 border-t-4 border-slate-900 mt-20 pt-16 pb-8 font-sans" id="site-footer">
+    <footer
+      className="bg-[#eff0eb] text-slate-900 border-t-4 border-slate-900 mt-20 pt-16 pb-8 font-sans"
+      id="site-footer"
+    >
       <div className="w-full max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand & Kisan Helpline Column */}
@@ -294,32 +297,66 @@ function Footer() {
 
           {/* Navigation Column 1: Agronomy Services */}
           <div>
-            <h4 className="text-slate-900 font-black text-lg mb-6 uppercase tracking-widest border-b-4 border-slate-900 inline-block pb-1">Farming Services</h4>
+            <h4 className="text-slate-900 font-black text-lg mb-6 uppercase tracking-widest border-b-4 border-slate-900 inline-block pb-1">
+              Farming Services
+            </h4>
             <ul className="flex flex-col gap-4 font-black text-slate-700">
               <li>
-                <Link href="/detect" className="hover:text-slate-900 hover:translate-x-1 inline-block transition-transform">Crop Disease Doctor</Link>
+                <Link
+                  href="/detect"
+                  className="hover:text-slate-900 hover:translate-x-1 inline-block transition-transform"
+                >
+                  Crop Disease Doctor
+                </Link>
               </li>
               <li>
-                <Link href="/mandi" className="hover:text-slate-900 hover:translate-x-1 inline-block transition-transform">Mandi Bhav Today</Link>
+                <Link
+                  href="/mandi"
+                  className="hover:text-slate-900 hover:translate-x-1 inline-block transition-transform"
+                >
+                  Mandi Bhav Today
+                </Link>
               </li>
               <li>
-                <Link href="/weather" className="hover:text-slate-900 hover:translate-x-1 inline-block transition-transform">Weather & Spray Desk</Link>
+                <Link
+                  href="/weather"
+                  className="hover:text-slate-900 hover:translate-x-1 inline-block transition-transform"
+                >
+                  Weather & Spray Desk
+                </Link>
               </li>
               <li>
-                <Link href="/detect" className="hover:text-slate-900 hover:translate-x-1 inline-block transition-transform">AI Instant Diagnosis</Link>
+                <Link
+                  href="/detect"
+                  className="hover:text-slate-900 hover:translate-x-1 inline-block transition-transform"
+                >
+                  AI Instant Diagnosis
+                </Link>
               </li>
             </ul>
           </div>
 
           {/* Navigation Column 2: Portals & Help */}
           <div>
-            <h4 className="text-slate-900 font-black text-lg mb-6 uppercase tracking-widest border-b-4 border-slate-900 inline-block pb-1">Farmer Portals</h4>
+            <h4 className="text-slate-900 font-black text-lg mb-6 uppercase tracking-widest border-b-4 border-slate-900 inline-block pb-1">
+              Farmer Portals
+            </h4>
             <ul className="flex flex-col gap-4 font-black text-slate-700">
               <li>
-                <Link href="/user" className="hover:text-slate-900 hover:translate-x-1 inline-block transition-transform">My Field Diary</Link>
+                <Link
+                  href="/user"
+                  className="hover:text-slate-900 hover:translate-x-1 inline-block transition-transform"
+                >
+                  My Field Diary
+                </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-slate-900 hover:translate-x-1 inline-block transition-transform">About AGRO SATHI</Link>
+                <Link
+                  href="/about"
+                  className="hover:text-slate-900 hover:translate-x-1 inline-block transition-transform"
+                >
+                  About AGRO SATHI
+                </Link>
               </li>
               <li>
                 <a
@@ -348,10 +385,12 @@ function Footer() {
         {/* Bottom Bar */}
         <div className="flex flex-col gap-6 pt-8 border-t-4 border-slate-900 mt-8 relative">
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-            <span className="font-black text-xl text-slate-900 tracking-widest uppercase">Team Froggers</span>
+            <span className="font-black text-xl text-slate-900 tracking-widest uppercase">
+              Team Froggers
+            </span>
             <span className="hidden sm:inline text-slate-400">|</span>
-            <Link 
-              href="/team" 
+            <Link
+              href="/team"
               className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border-2 border-slate-900 rounded-lg shadow-[2px_2px_0px_0px_#0f172a] hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_#0f172a] active:translate-y-1 active:shadow-none transition-all text-slate-900 font-bold cursor-pointer"
             >
               <User size={16} className="text-slate-700" />
@@ -939,18 +978,27 @@ function HomePage() {
             /* RENDER INFORMATIONAL SECTION (Neo-Brutalist Layout) */
             <section className="agro-neo-info">
               <h2 className="neo-main-title">How it works</h2>
-              
+
               <div className="neo-steps-container">
                 {/* Step 1 */}
                 <div className="neo-step-row">
                   <div className="neo-step-text">
                     <h3>1. Snap a photo of your leaf</h3>
-                    <p>The smartest AI assistant will analyze the leaf for any visual symptoms of diseases or pests. Available directly on your phone.</p>
-                    <button className="neo-btn-primary" onClick={() => {
-                      const trig = document.getElementById("hero-main-camera-trigger");
-                      if (trig) trig.click();
-                      else heroCameraRef.current?.click();
-                    }}>
+                    <p>
+                      The smartest AI assistant will analyze the leaf for any
+                      visual symptoms of diseases or pests. Available directly
+                      on your phone.
+                    </p>
+                    <button
+                      className="neo-btn-primary"
+                      onClick={() => {
+                        const trig = document.getElementById(
+                          "hero-main-camera-trigger"
+                        );
+                        if (trig) trig.click();
+                        else heroCameraRef.current?.click();
+                      }}
+                    >
                       Take a Photo
                     </button>
                   </div>
@@ -966,7 +1014,11 @@ function HomePage() {
                   </div>
                   <div className="neo-step-text">
                     <h3>2. Instant AI Diagnosis</h3>
-                    <p>Click "Analyze" to run the image through our advanced crop pathology engine. See confidence scores and disease names in seconds.</p>
+                    <p>
+                      Click "Analyze" to run the image through our advanced crop
+                      pathology engine. See confidence scores and disease names
+                      in seconds.
+                    </p>
                   </div>
                 </div>
 
@@ -974,7 +1026,10 @@ function HomePage() {
                 <div className="neo-step-row">
                   <div className="neo-step-text">
                     <h3>3. Get Actionable Remedies</h3>
-                    <p>Receive immediate chemical and organic treatment plans directly on your phone, preventing further crop loss.</p>
+                    <p>
+                      Receive immediate chemical and organic treatment plans
+                      directly on your phone, preventing further crop loss.
+                    </p>
                     <Link href="/about" className="neo-btn-secondary">
                       Learn more
                     </Link>
@@ -1080,7 +1135,7 @@ function GuidesPage() {
           />
         </div>
         <div className="guide-filters">
-          {["All", "Kharif", "Rabi"].map((filter) => (
+          {["All", "Kharif", "Rabi"].map(filter => (
             <button
               key={filter}
               className={`filter-button ${season === filter ? "active" : ""}`}
@@ -1224,7 +1279,8 @@ function WeatherPage() {
   );
   const [loadingWeather, setLoadingWeather] = useState(false);
   const [aiAdvice, setAiAdvice] = useState(() => {
-    const fallbackAdvice = "• Keep field bunds clean to prevent pest breeding and reduce disease spread.\n• Spray pesticides in the early morning to avoid evaporation and leaf burn.\n• Monitor crop weekly for early signs of disease or nutrient deficiency.";
+    const fallbackAdvice =
+      "• Keep field bunds clean to prevent pest breeding and reduce disease spread.\n• Spray pesticides in the early morning to avoid evaporation and leaf burn.\n• Monitor crop weekly for early signs of disease or nutrient deficiency.";
     if (!isCacheValid) return fallbackAdvice;
     try {
       return localStorage.getItem("wd_advice") || fallbackAdvice;
@@ -1606,50 +1662,78 @@ Format: Give exactly 3 bullet points starting with "•". Each bullet should be 
                 <span>Generating advice for your conditions…</span>
               </div>
             ) : aiAdvice ? (
-              <div className="wd-ai-carousel" style={{ position: "relative", minHeight: "90px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+              <div
+                className="wd-ai-carousel"
+                style={{
+                  position: "relative",
+                  minHeight: "90px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                }}
+              >
                 <div style={{ position: "relative", flex: 1 }}>
                   {aiAdvice
                     .split("\n")
                     .filter(l => l.trim())
                     .map((line, i) => (
-                      <div 
-                        key={i} 
+                      <div
+                        key={i}
                         className="wd-ai-item"
                         style={{
-                          position: i === aiSlideIndex ? "relative" : "absolute",
+                          position:
+                            i === aiSlideIndex ? "relative" : "absolute",
                           top: 0,
                           left: 0,
                           width: "100%",
                           opacity: i === aiSlideIndex ? 1 : 0,
-                          transform: i === aiSlideIndex ? "translateY(0) scale(1)" : "translateY(15px) scale(0.98)",
+                          transform:
+                            i === aiSlideIndex
+                              ? "translateY(0) scale(1)"
+                              : "translateY(15px) scale(0.98)",
                           transition: "all 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
                           pointerEvents: i === aiSlideIndex ? "auto" : "none",
                           display: "flex",
                           alignItems: "flex-start",
-                          gap: "8px"
+                          gap: "8px",
                         }}
                       >
-                        <span className="wd-ai-bullet" style={{ flexShrink: 0, marginTop: "6px" }} />
-                        <span style={{ lineHeight: 1.5 }}>{line.replace(/^[•\-\*]\s*/, "")}</span>
+                        <span
+                          className="wd-ai-bullet"
+                          style={{ flexShrink: 0, marginTop: "6px" }}
+                        />
+                        <span style={{ lineHeight: 1.5 }}>
+                          {line.replace(/^[•\-\*]\s*/, "")}
+                        </span>
                       </div>
                     ))}
                 </div>
-                <div className="wd-ai-dots" style={{ display: "flex", gap: "5px", marginTop: "14px" }}>
-                  {aiAdvice.split("\n").filter(l => l.trim()).map((_, i) => (
-                    <div 
-                      key={i} 
-                      style={{
-                        width: "6px", 
-                        height: "6px", 
-                        borderRadius: "50%", 
-                        background: i === aiSlideIndex ? "var(--lime-leaf, #64b60a)" : "rgba(100, 182, 10, 0.2)",
-                        transition: "all 0.3s ease",
-                        cursor: "pointer",
-                        transform: i === aiSlideIndex ? "scale(1.2)" : "scale(1)"
-                      }}
-                      onClick={() => setAiSlideIndex(i)}
-                    />
-                  ))}
+                <div
+                  className="wd-ai-dots"
+                  style={{ display: "flex", gap: "5px", marginTop: "14px" }}
+                >
+                  {aiAdvice
+                    .split("\n")
+                    .filter(l => l.trim())
+                    .map((_, i) => (
+                      <div
+                        key={i}
+                        style={{
+                          width: "6px",
+                          height: "6px",
+                          borderRadius: "50%",
+                          background:
+                            i === aiSlideIndex
+                              ? "var(--lime-leaf, #64b60a)"
+                              : "rgba(100, 182, 10, 0.2)",
+                          transition: "all 0.3s ease",
+                          cursor: "pointer",
+                          transform:
+                            i === aiSlideIndex ? "scale(1.2)" : "scale(1)",
+                        }}
+                        onClick={() => setAiSlideIndex(i)}
+                      />
+                    ))}
                 </div>
               </div>
             ) : (
@@ -1832,7 +1916,7 @@ function AdvisoryPage() {
       <div className="advisory-layout">
         <section>
           <div className="filter-tabs" role="tablist">
-            {filters.map((filter) => (
+            {filters.map(filter => (
               <button
                 key={filter}
                 className={active === filter ? "active" : ""}
@@ -1943,7 +2027,9 @@ function AboutPage() {
           <span className="eyebrow">Agro Sathi Intelligence</span>
           <h1>Empowering the Kisan with AI</h1>
           <p>
-            Your digital crop doctor. We combine artificial intelligence with local agronomy to help you identify diseases instantly and take the right action.
+            Your digital crop doctor. We combine artificial intelligence with
+            local agronomy to help you identify diseases instantly and take the
+            right action.
           </p>
         </div>
       </section>
@@ -1957,28 +2043,40 @@ function AboutPage() {
               <Eye size={24} />
             </div>
             <h3>1. Observe</h3>
-            <p>Notice unusual spots, pest damage, or discoloration on your crop leaves.</p>
+            <p>
+              Notice unusual spots, pest damage, or discoloration on your crop
+              leaves.
+            </p>
           </div>
           <div className="timeline-step">
             <div className="step-icon">
               <Camera size={24} />
             </div>
             <h3>2. Snap & Upload</h3>
-            <p>Use the Agro Sathi camera tool to take a clear, close-up photo of the affected leaf.</p>
+            <p>
+              Use the Agro Sathi camera tool to take a clear, close-up photo of
+              the affected leaf.
+            </p>
           </div>
           <div className="timeline-step">
             <div className="step-icon">
               <Brain size={24} />
             </div>
             <h3>3. AI Analysis</h3>
-            <p>Our smart engine processes the image against thousands of known pathology cases instantly.</p>
+            <p>
+              Our smart engine processes the image against thousands of known
+              pathology cases instantly.
+            </p>
           </div>
           <div className="timeline-step">
             <div className="step-icon">
               <CheckCircle2 size={24} />
             </div>
             <h3>4. Actionable Results</h3>
-            <p>Receive a clear, single-window report with exact steps to save your yield.</p>
+            <p>
+              Receive a clear, single-window report with exact steps to save
+              your yield.
+            </p>
           </div>
         </div>
       </section>
@@ -1990,22 +2088,34 @@ function AboutPage() {
           <div className="feature-card yellow">
             <AlertTriangle size={24} />
             <h4>Disease & Severity</h4>
-            <p>Know exactly what disease you're fighting and how severe it is on a 1-5 scale.</p>
+            <p>
+              Know exactly what disease you're fighting and how severe it is on
+              a 1-5 scale.
+            </p>
           </div>
           <div className="feature-card blue">
             <FlaskConical size={24} />
             <h4>Chemical Sprays</h4>
-            <p>Targeted chemical fungicide or insecticide recommendations with proper dosage.</p>
+            <p>
+              Targeted chemical fungicide or insecticide recommendations with
+              proper dosage.
+            </p>
           </div>
           <div className="feature-card green">
             <Sprout size={24} />
             <h4>Organic Remedies</h4>
-            <p>Biological and safe organic alternatives like Neem Oil for sustainable farming.</p>
+            <p>
+              Biological and safe organic alternatives like Neem Oil for
+              sustainable farming.
+            </p>
           </div>
           <div className="feature-card teal">
             <ShieldCheck size={24} />
             <h4>Preventative Care</h4>
-            <p>Actionable advice on soil, watering, and field hygiene to prevent the spread.</p>
+            <p>
+              Actionable advice on soil, watering, and field hygiene to prevent
+              the spread.
+            </p>
           </div>
         </div>
       </section>
@@ -2023,7 +2133,6 @@ function AboutPage() {
     </main>
   );
 }
-
 
 export default function Home() {
   const [location, navigate] = useLocation();

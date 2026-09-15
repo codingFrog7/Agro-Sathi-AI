@@ -4,6 +4,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   signInWithRedirect,
+  getRedirectResult,
   signOut,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -222,11 +223,13 @@ export async function loginWithGoogle() {
     const code = err?.code || "";
     if (
       code === "auth/popup-closed-by-user" ||
-      code === "auth/cancelled-popup-request" ||
-      code === "auth/popup-blocked" ||
-      code === "auth/unauthorized-domain"
+      code === "auth/cancelled-popup-request"
     ) {
-      console.warn("Popup authentication failed or closed. Attempting redirect fallback...", err);
+      console.warn("Sign-in popup closed or cancelled by user.");
+      return null;
+    }
+    if (code === "auth/popup-blocked") {
+      console.warn("Popup blocked. Attempting redirect fallback...", err);
       try {
         await signInWithRedirect(auth, googleProvider);
         return null;
@@ -236,6 +239,16 @@ export async function loginWithGoogle() {
       }
     }
     console.error("Google sign in error:", err);
+    throw err;
+  }
+}
+
+export async function handleRedirectResult() {
+  try {
+    const result = await getRedirectResult(auth);
+    return result?.user || null;
+  } catch (err) {
+    console.error("Get redirect result error:", err);
     throw err;
   }
 }
@@ -266,7 +279,10 @@ export async function registerWithEmail(email, password, displayName) {
           displayName: displayName.trim(),
         });
       } catch (profileErr) {
-        console.warn("Could not update displayName profile:", profileErr?.message);
+        console.warn(
+          "Could not update displayName profile:",
+          profileErr?.message
+        );
       }
     }
     return userCredential.user;

@@ -53,6 +53,7 @@ export default function ProfileDropdown({ isOpen, onClose, onOpenQuickAuth }) {
   const [editCrop, setEditCrop] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [googleError, setGoogleError] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState("en");
   const [mandiAlertsEnabled, setMandiAlertsEnabled] = useState(true);
 
