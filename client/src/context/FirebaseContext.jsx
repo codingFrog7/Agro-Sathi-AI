@@ -218,12 +218,16 @@ export function FirebaseProvider({ children }) {
               updatedAt: serverTimestamp(),
             };
             setFarmerProfile(initialProfile);
-            setDoc(profileRef, initialProfile).catch(e =>
-              console.warn(
-                "Could not save initial profile to cloud:",
-                e.message
-              )
-            );
+            setDoc(profileRef, {
+              userId: user.uid,
+              displayName: user.displayName || user.email?.split("@")[0] || "Kisan Farmer",
+              location: "Karimnagar, Telangana",
+              primaryCrop: "Cotton / Chilli",
+              email: user.email || "",
+              photoURL: user.photoURL || null
+            }, { merge: true }).catch(e => {
+              console.info("Firestore profile sync deferred (offline or rules fallback):", e?.message);
+            });
           }
         },
         error => {
