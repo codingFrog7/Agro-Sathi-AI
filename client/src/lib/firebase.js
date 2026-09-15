@@ -3,6 +3,7 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithRedirect,
   signOut,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -219,19 +220,20 @@ export async function loginWithGoogle() {
     return result.user;
   } catch (err) {
     const code = err?.code || "";
-    // User intentionally closed or cancelled the popup - expected user interaction, not a runtime failure
     if (
       code === "auth/popup-closed-by-user" ||
-      code === "auth/cancelled-popup-request"
+      code === "auth/cancelled-popup-request" ||
+      code === "auth/popup-blocked" ||
+      code === "auth/unauthorized-domain"
     ) {
-      console.info("Google sign-in popup closed by user.");
-      return null;
-    }
-    if (code === "auth/popup-blocked") {
-      const msg =
-        "Google sign-in pop-up was blocked by your browser. Please enable popups for this site and try again.";
-      console.warn(msg);
-      throw new Error(msg);
+      console.warn("Popup authentication failed or closed. Attempting redirect fallback...", err);
+      try {
+        await signInWithRedirect(auth, googleProvider);
+        return null;
+      } catch (redirectErr) {
+        console.error("Redirect auth error:", redirectErr);
+        throw redirectErr;
+      }
     }
     console.error("Google sign in error:", err);
     throw err;
