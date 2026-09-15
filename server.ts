@@ -28,7 +28,8 @@ const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 // Security Middlewares
 app.use(helmet({
   contentSecurityPolicy: false, // Vite uses inline scripts heavily in dev
-  crossOriginEmbedderPolicy: false
+  crossOriginEmbedderPolicy: false,
+  crossOriginOpenerPolicy: false
 }));
 app.use(cors({
   origin: "*", // allow all or restrict to specific domain in production

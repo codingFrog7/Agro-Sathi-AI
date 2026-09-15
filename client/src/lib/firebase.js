@@ -1,9 +1,11 @@
 import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
   signInWithRedirect,
+  getRedirectResult,
   signOut,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -64,6 +66,12 @@ const finalConfig = {
 // Initialize Firebase App
 const app = initializeApp(finalConfig);
 
+// Initialize Analytics if in browser environment
+export let analytics = null;
+if (typeof window !== "undefined") {
+  analytics = getAnalytics(app);
+}
+
 // Initialize Firestore safely with graceful fallback to default
 let firestoreDb;
 try {
@@ -83,6 +91,13 @@ export const db = firestoreDb;
 
 // Auth instance
 export const auth = getAuth(app);
+
+// Handle redirect sign-in results if popup was blocked and it fell back to redirect
+if (typeof window !== "undefined") {
+  getRedirectResult(auth).catch((err) => {
+    console.error("Redirect sign in error:", err);
+  });
+}
 
 // Google Auth Provider configured for maximum reliability
 export const googleProvider = new GoogleAuthProvider();
@@ -220,13 +235,18 @@ export async function loginWithGoogle() {
     return result.user;
   } catch (err) {
     const code = err?.code || "";
+
+    // If the user intentionally closed the popup, don't force a redirect.
+    if (code === "auth/popup-closed-by-user" || code === "auth/cancelled-popup-request") {
+      console.warn("User cancelled the Google sign-in popup.");
+      throw err;
+    }
+
     if (
-      code === "auth/popup-closed-by-user" ||
-      code === "auth/cancelled-popup-request" ||
       code === "auth/popup-blocked" ||
       code === "auth/unauthorized-domain"
     ) {
-      console.warn("Popup authentication failed or closed. Attempting redirect fallback...", err);
+      console.warn("Popup blocked or domain unauthorized. Attempting redirect fallback...", err);
       try {
         await signInWithRedirect(auth, googleProvider);
         return null;
