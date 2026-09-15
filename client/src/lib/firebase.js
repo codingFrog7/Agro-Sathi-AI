@@ -261,9 +261,13 @@ export async function registerWithEmail(email, password, displayName) {
       password
     );
     if (displayName && userCredential.user) {
-      await updateProfile(userCredential.user, {
-        displayName: displayName.trim(),
-      });
+      try {
+        await updateProfile(userCredential.user, {
+          displayName: displayName.trim(),
+        });
+      } catch (profileErr) {
+        console.warn("Could not update displayName profile:", profileErr?.message);
+      }
     }
     return userCredential.user;
   } catch (err) {
