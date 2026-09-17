@@ -2073,6 +2073,36 @@ function AboutPage() {
         </div>
       </section>
 
+      {/* Team Froggers Spotlight */}
+      <section className="bg-white border-4 border-slate-900 rounded-3xl p-6 md:p-8 shadow-[8px_8px_0px_0px_#0f172a] mt-12 mb-6">
+        <div className="flex flex-col md:flex-row items-center gap-8">
+          <div className="w-full md:w-1/2 rounded-2xl border-2 border-slate-900 overflow-hidden shadow-[4px_4px_0px_0px_#0f172a] bg-white">
+            <img 
+              src="/team-froggers.png" 
+              alt="Team Froggers" 
+              className="w-full h-auto object-contain block"
+            />
+          </div>
+          <div className="w-full md:w-1/2 flex flex-col items-start">
+            <span className="inline-flex items-center gap-2 bg-[#b6f022] text-slate-900 px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-widest border-2 border-slate-900 mb-3 shadow-[2px_2px_0px_0px_#0f172a]">
+              Creators & Innovators
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 uppercase tracking-tight mb-2">
+              Meet Team Froggers
+            </h2>
+            <p className="text-slate-600 font-medium text-sm sm:text-base leading-relaxed mb-6">
+              Agro Sathi was engineered from the ground up by Team Froggers to put real-time AI crop diagnostics, mandi intelligence, and agromet alerts into the hands of Indian farmers.
+            </p>
+            <Link 
+              href="/team" 
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-900 text-white border-2 border-slate-900 rounded-xl shadow-[3px_3px_0px_0px_#b6f022] hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_#b6f022] active:translate-y-1 active:shadow-none transition-all font-bold text-sm"
+            >
+              <span>Explore Team Story</span> <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Footer CTA */}
       <section className="contact-strip" style={{ marginTop: "64px" }}>
         <div>
