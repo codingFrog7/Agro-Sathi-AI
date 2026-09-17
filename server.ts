@@ -9,8 +9,8 @@ import cors from "cors";
 import rateLimit from "express-rate-limit";
 
 // multer for multipart file upload handling on /api/python/diagnose (Security: check mime types)
-const upload = multer({ 
-  storage: multer.memoryStorage(), 
+const upload = multer({
+  storage: multer.memoryStorage(),
   limits: { fileSize: 25 * 1024 * 1024 }, // 25MB
   fileFilter: (_req, file, cb) => {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];

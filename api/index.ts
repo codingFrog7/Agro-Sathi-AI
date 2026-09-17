@@ -5,8 +5,8 @@ import multer from "multer";
 import cors from "cors";
 
 // multer for multipart file upload handling
-const upload = multer({ 
-  storage: multer.memoryStorage(), 
+const upload = multer({
+  storage: multer.memoryStorage(),
   limits: { fileSize: 25 * 1024 * 1024 }, // 25MB
   fileFilter: (_req, file, cb) => {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
